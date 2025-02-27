@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_weather/search/search.dart';
-import 'package:flutter_weather/settings/settings.dart';
-import 'package:flutter_weather/weather/weather.dart';
+import '../../search/view/search_page.dart';
+import '../../settings/view/settings_page.dart';
+import '../cubit/weather_cubit.dart';
+import '../widgets/weather_empty.dart';
+import '../widgets/weather_error.dart';
+import '../widgets/weather_loading.dart';
+import '../widgets/weather_populated.dart';
 
 class WeatherPage extends StatelessWidget {
   const WeatherPage({super.key});
