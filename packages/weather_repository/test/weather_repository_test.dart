@@ -25,7 +25,7 @@ void main() {
 
     group('constructor', () {
       test('instantiates internal weather api client when not injected', () {
-        expect(WeatherRepository(), isNotNull);
+        expect(WeatherRepository(weatherApiClient: weatherApiClient), isNotNull);
       });
     });
 

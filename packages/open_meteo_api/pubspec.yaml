@@ -10,6 +10,7 @@ dependencies:
   logger: ^2.4.0  # for logging purpose
   http: ^1.0.0
   json_annotation: ^4.9.0
+  get_it: ^8.0.3
 
 dev_dependencies:
   retrofit_generator: '>=8.0.0 <10.0.0' # for Dart 3.3 use ^9.0.0

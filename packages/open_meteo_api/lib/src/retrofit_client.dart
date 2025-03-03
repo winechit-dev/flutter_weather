@@ -3,15 +3,21 @@ import 'package:retrofit/retrofit.dart';
 
 part 'retrofit_client.g.dart';
 
-@RestApi(baseUrl: 'https://geocoding-api.open-meteo.com/v1/')
+@RestApi(baseUrl: '')
 abstract class RestClient {
   factory RestClient(Dio dio, {String? baseUrl}) = _RestClient;
 
-  @GET('/search')
+  @GET('https://geocoding-api.open-meteo.com/v1/search')
   Future<HttpResponse> locationSearch(
       @Query('name') String query,
       @Query('count') int count
   );
+
+  @GET('https://api.open-meteo.com/v1/forecast')
+  Future<HttpResponse> getWeather(
+      @Query('latitude') double latitude,
+      @Query('longitude') double longitude,
+      {@Query('current_weather') bool currentWeather = true});
 }
 
 class MyCallAdapter<T> extends CallAdapter<Future<T>, Future<Result<T>>> {

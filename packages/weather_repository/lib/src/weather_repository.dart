@@ -4,8 +4,8 @@ import 'package:open_meteo_api/open_meteo_api.dart' hide Weather;
 import 'package:weather_repository/weather_repository.dart';
 
 class WeatherRepository {
-  WeatherRepository({OpenMeteoApiClient? weatherApiClient})
-      : _weatherApiClient = weatherApiClient ?? OpenMeteoApiClient();
+  WeatherRepository({required OpenMeteoApiClient weatherApiClient})
+      : _weatherApiClient = weatherApiClient;
 
   final OpenMeteoApiClient _weatherApiClient;
 
