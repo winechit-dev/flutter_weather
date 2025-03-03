@@ -2,7 +2,10 @@ import 'dart:async';
 import 'dart:convert';
 
 import 'package:http/http.dart' as http;
+import 'package:dio/dio.dart';
+import 'package:logger/logger.dart';
 import 'package:open_meteo_api/open_meteo_api.dart';
+import 'package:open_meteo_api/src/retrofit_client.dart';
 
 /// Exception thrown when locationSearch fails.
 class LocationRequestFailure implements Exception {}
@@ -26,11 +29,12 @@ class OpenMeteoApiClient {
 
   static const _baseUrlWeather = 'api.open-meteo.com';
   static const _baseUrlGeocoding = 'geocoding-api.open-meteo.com';
+  final logger = Logger();
 
   final http.Client _httpClient;
 
   /// Finds a [Location] `/v1/search/?name=(query)`.
-  Future<Location> locationSearch(String query) async {
+  Future<Location> locationSearch1(String query) async {
     final locationRequest = Uri.https(
       _baseUrlGeocoding,
       '/v1/search',
@@ -44,6 +48,27 @@ class OpenMeteoApiClient {
     }
 
     final locationJson = jsonDecode(locationResponse.body) as Map;
+
+    if (!locationJson.containsKey('results')) throw LocationNotFoundFailure();
+
+    final results = locationJson['results'] as List;
+
+    if (results.isEmpty) throw LocationNotFoundFailure();
+
+    return Location.fromJson(results.first as Map<String, dynamic>);
+  }
+
+  Future<Location> locationSearch(String query) async {
+    final dio = Dio();
+    final client = RestClient(dio);
+
+    final locationResponse = await client.locationSearch(query, 1);
+
+    if (locationResponse.response.statusCode != 200) {
+      throw LocationRequestFailure();
+    }
+
+    final locationJson = locationResponse.data as Map<String, dynamic>;
 
     if (!locationJson.containsKey('results')) throw LocationNotFoundFailure();
 
